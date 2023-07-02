@@ -1,4 +1,6 @@
 import { Button, Typography } from "@mui/material";
+import { GetServerSideProps } from "next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Link from "next/link";
 
 export default function AboutPage() {
@@ -11,6 +13,7 @@ export default function AboutPage() {
         aliquam, assumenda ea ipsum aut! Officiis illo hic alias maiores
         distinctio!
       </Typography>
+
       <Button variant="text">
         <Link href="/" style={{ textDecoration: "none" }}>
           Home
@@ -21,3 +24,15 @@ export default function AboutPage() {
 }
 
 AboutPage.noLayout = true;
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const translateProps = await serverSideTranslations(context.locale ?? "en", [
+    "common",
+  ]);
+
+  return {
+    props: {
+      ...translateProps,
+    },
+  };
+};

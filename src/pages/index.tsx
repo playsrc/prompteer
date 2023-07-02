@@ -1,6 +1,8 @@
 import { Button, Stack, Typography } from "@mui/material";
-import Link from "next/link";
 import { useGo } from "@refinedev/core";
+import { GetServerSideProps } from "next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import Link from "next/link";
 
 export default function HomePage() {
   const go = useGo();
@@ -35,3 +37,15 @@ export default function HomePage() {
 }
 
 HomePage.noLayout = true;
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const translateProps = await serverSideTranslations(context.locale ?? "en", [
+    "common",
+  ]);
+
+  return {
+    props: {
+      ...translateProps,
+    },
+  };
+};
