@@ -1,26 +1,28 @@
-import { MuiCreateInferencer } from "@refinedev/inferencer/mui";
+import { Typography } from "@mui/material";
 import { GetServerSideProps } from "next";
+import { getServerSession } from "next-auth";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { authProvider } from "src/authProvider";
+import { authOptions } from "../api/auth/[...nextauth]";
 
-export default function CategoryCreate() {
-  return <MuiCreateInferencer />;
+export default function Dashboard() {
+  return (
+    <>
+      <Typography variant="h2">Dashboard</Typography>
+    </>
+  );
 }
 
 export const getServerSideProps: GetServerSideProps<{}> = async (context) => {
-  const { authenticated, redirectTo } = await authProvider.check(context);
+  const session = await getServerSession(context.req, context.res, authOptions);
 
   const translateProps = await serverSideTranslations(context.locale ?? "en", [
     "common",
   ]);
 
-  if (!authenticated) {
+  if (!session) {
     return {
-      props: {
-        ...translateProps,
-      },
       redirect: {
-        destination: `${redirectTo}?to=${encodeURIComponent("/categories")}`,
+        destination: "/login?to=/dashboard",
         permanent: false,
       },
     };
@@ -28,6 +30,7 @@ export const getServerSideProps: GetServerSideProps<{}> = async (context) => {
 
   return {
     props: {
+      session,
       ...translateProps,
     },
   };

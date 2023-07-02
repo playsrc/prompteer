@@ -3,18 +3,20 @@ import { AuthPage } from "@refinedev/mui";
 import { GetServerSideProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
-import { authProvider } from "src/authProvider";
-
 export default function Login() {
   return (
     <AuthPage
       type="login"
-      formProps={{
-        defaultValues: {
-          email: "info@refine.dev",
-          password: "refine-supabase",
+      providers={[
+        {
+          name: "github",
+          label: "with GitHub",
         },
-      }}
+        {
+          name: "discord",
+          label: "with Discord",
+        },
+      ]}
     />
   );
 }
@@ -22,21 +24,9 @@ export default function Login() {
 Login.noLayout = true;
 
 export const getServerSideProps: GetServerSideProps<{}> = async (context) => {
-  const { authenticated } = await authProvider.check(context);
-
   const translateProps = await serverSideTranslations(context.locale ?? "en", [
     "common",
   ]);
-
-  if (authenticated) {
-    return {
-      props: {},
-      redirect: {
-        destination: `/`,
-        permanent: false,
-      },
-    };
-  }
 
   return {
     props: {
