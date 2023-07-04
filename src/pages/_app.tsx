@@ -130,14 +130,11 @@ const App = (props: React.PropsWithChildren) => {
               resources={[
                 { name: "dashboard", list: "/dashboard" },
                 {
-                  name: "blog_posts",
-                  list: "/blog-posts",
-                  create: "/blog-posts/create",
-                  edit: "/blog-posts/edit/:id",
-                  show: "/blog-posts/show/:id",
-                  meta: {
-                    canDelete: true,
-                  },
+                  name: "Prompt",
+                  list: "/prompts",
+                  create: "/prompts/create",
+                  edit: "/prompts/edit/:id",
+                  show: "/prompts/show/:id",
                 },
               ]}
               options={{
