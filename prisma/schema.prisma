@@ -8,6 +8,43 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
+model Prompt {
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String    @unique
+  language   Language  @relation(fields: [languageId], references: [id])
+  languageId String    @unique @db.Uuid
+  title      String
+  prompt     String
+  parameter  String?
+  detail     String?
+  likeCount  Int       @default(0)
+  flagCount  Int       @default(0)
+  isFlagged  Boolean   @default(false)
+  comments   Comment[]
+  createdAt  DateTime  @default(now())
+}
+
+model Comment {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  promptId  String   @unique @db.Uuid
+  prompt    Prompt   @relation(fields: [promptId], references: [id], onDelete: Cascade)
+  comment   String
+  likeCount Int      @default(0)
+  flagCount Int      @default(0)
+  isFlagged Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model Language {
+  id      String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name    String
+  code    String
+  prompts Prompt[]
+}
+
 model Account {
   id                String  @id @default(cuid())
   userId            String
@@ -44,6 +81,8 @@ model User {
   sessions         Session[]
   stripeCustomerId String?   @unique
   stripeActive     Boolean   @default(false)
+  prompts          Prompt[]
+  comments         Comment[]
 }
 
 model VerificationToken {
