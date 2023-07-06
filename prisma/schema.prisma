@@ -12,6 +12,7 @@ model Prompt {
   id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   userId     String   @unique @map("user_id")
   languageId String   @unique @map("language_id") @db.Uuid
+  aiModelId  String   @unique @map("ai_model_id") @db.Uuid
   title      String
   content    String
   parameter  String?
@@ -22,6 +23,7 @@ model Prompt {
   createdAt  DateTime @default(now()) @map("created_at")
   comments   Comment?
   language   Language @relation(fields: [languageId], references: [id])
+  aiModel    AiModel  @relation(fields: [aiModelId], references: [id])
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("prompts")
@@ -49,6 +51,14 @@ model Language {
   prompts Prompt?
 
   @@map("languages")
+}
+
+model AiModel {
+  id      String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name    String
+  prompts Prompt?
+
+  @@map("ai_models")
 }
 
 model Account {
