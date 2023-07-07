@@ -130,7 +130,7 @@ const App = (props: React.PropsWithChildren) => {
               resources={[
                 { name: "dashboard", list: "/dashboard" },
                 {
-                  name: "Prompt",
+                  name: "prompts",
                   list: "/prompts",
                   create: "/prompts/create",
                   edit: "/prompts/edit/:id",
