@@ -27,7 +27,7 @@ interface IUser {
   avatar: string;
 }
 
-export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
+export const ThemedHeaderV2: React.FC<RefineThemedLayoutV2HeaderProps> = ({
   sticky = true,
 }) => {
   const { mode, setMode } = useContext(ColorModeContext);
@@ -41,7 +41,7 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
       color="transparent"
       elevation={0}
     >
-      <Paper elevation={5} sx={{ boxShadow: "none" }}>
+      <Paper elevation={0} sx={{ boxShadow: "none" }}>
         <Toolbar>
           <Stack direction="row" width="100%" alignItems="center" gap="1rem">
             <HamburgerMenu />
@@ -57,6 +57,7 @@ export const Header: React.FC<RefineThemedLayoutV2HeaderProps> = ({
                     paddingLeft: (theme) => theme.spacing(2.5),
                     borderRadius: "30px",
                   },
+                  display: { xs: "none", md: "flex" },
                 }}
               />
             </FormControl>

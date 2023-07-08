@@ -1,26 +1,30 @@
-import { SessionProvider, useSession, signOut, signIn } from "next-auth/react";
-import { AuthBindings, GitHubBanner, Refine } from "@refinedev/core";
+import { AuthBindings, Refine } from "@refinedev/core";
 import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
-import {
-  RefineSnackbarProvider,
-  ThemedLayoutV2,
-  notificationProvider,
-} from "@refinedev/mui";
+import { RefineSnackbarProvider, notificationProvider } from "@refinedev/mui";
 import routerProvider, {
   DocumentTitleHandler,
   UnsavedChangesNotifier,
 } from "@refinedev/nextjs-router";
 import type { NextPage } from "next";
+import { SessionProvider, signIn, signOut, useSession } from "next-auth/react";
 import { AppProps } from "next/app";
 
-import { Header } from "@components/header";
+import { ThemedLayoutV2 } from "@components/themedLayout";
 import { ColorModeContextProvider } from "@contexts";
+import {
+  ForumOutlined,
+  Inventory2Outlined,
+  PersonOutline,
+  SettingsOutlined,
+  SpaceDashboardOutlined,
+  WysiwygOutlined,
+} from "@mui/icons-material";
 import CssBaseline from "@mui/material/CssBaseline";
 import GlobalStyles from "@mui/material/GlobalStyles";
 import { dataProvider } from "@refinedev/supabase";
 import { appWithTranslation, useTranslation } from "next-i18next";
-import { supabaseClient } from "src/utility";
 import { useRouter } from "next/router";
+import { supabaseClient } from "src/utility";
 
 export type ExtendedNextPage = NextPage & {
   noLayout?: boolean;
@@ -128,13 +132,41 @@ const App = (props: React.PropsWithChildren) => {
               notificationProvider={notificationProvider}
               i18nProvider={i18nProvider}
               resources={[
-                { name: "dashboard", list: "/dashboard" },
+                {
+                  name: "dashboard",
+                  list: "/dashboard",
+                  meta: {
+                    label: "Dashboard",
+                    icon: <SpaceDashboardOutlined />,
+                  },
+                },
                 {
                   name: "prompts",
                   list: "/prompts",
                   create: "/prompts/create",
                   edit: "/prompts/edit/:id",
                   show: "/prompts/show/:id",
+                  meta: { icon: <WysiwygOutlined /> },
+                },
+                {
+                  name: "Created prompts",
+                  list: "/",
+                  meta: { icon: <Inventory2Outlined /> },
+                },
+                {
+                  name: "Created comments",
+                  list: "/",
+                  meta: { icon: <ForumOutlined /> },
+                },
+                {
+                  name: "My profile",
+                  list: "/",
+                  meta: { label: "My profile", icon: <PersonOutline /> },
+                },
+                {
+                  name: "Settings",
+                  list: "/",
+                  meta: { icon: <SettingsOutlined /> },
                 },
               ]}
               options={{
@@ -164,7 +196,7 @@ function MyApp({
     }
 
     return (
-      <ThemedLayoutV2 Header={() => <Header sticky />}>
+      <ThemedLayoutV2>
         <Component {...pageProps} />
       </ThemedLayoutV2>
     );
