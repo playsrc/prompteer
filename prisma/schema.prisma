@@ -9,30 +9,30 @@ datasource db {
 }
 
 model Prompt {
-  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  userId     String   @unique @map("user_id")
-  languageId String   @unique @map("language_id") @db.Uuid
-  aiModelId  String   @unique @map("ai_model_id") @db.Uuid
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId     String    @map("user_id")
+  languageId String    @map("language_id") @db.Uuid
+  aiModelId  String    @map("ai_model_id") @db.Uuid
   title      String
   content    String
   parameter  String?
   detail     String?
-  likeCount  Int      @default(0) @map("like_count")
-  flagCount  Int      @default(0) @map("flag_count")
-  isFlagged  Boolean  @default(false) @map("is_flagged")
-  createdAt  DateTime @default(now()) @map("created_at")
-  comments   Comment?
-  language   Language @relation(fields: [languageId], references: [id])
-  aiModel    AiModel  @relation(fields: [aiModelId], references: [id])
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  likeCount  Int       @default(0) @map("like_count")
+  flagCount  Int       @default(0) @map("flag_count")
+  isFlagged  Boolean   @default(false) @map("is_flagged")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  comments   Comment[]
+  language   Language  @relation(fields: [languageId], references: [id])
+  aiModel    AiModel   @relation(fields: [aiModelId], references: [id])
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("prompts")
 }
 
 model Comment {
   id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  userId    String   @unique @map("user_id")
-  promptId  String   @unique @map("prompt_id") @db.Uuid
+  userId    String   @map("user_id")
+  promptId  String   @map("prompt_id") @db.Uuid
   content   String
   likeCount Int      @default(0) @map("like_count")
   flagCount Int      @default(0) @map("flag_count")
@@ -45,18 +45,18 @@ model Comment {
 }
 
 model Language {
-  id      String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id      String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name    String
   code    String
-  prompts Prompt?
+  prompts Prompt[]
 
   @@map("languages")
 }
 
 model AiModel {
-  id      String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id      String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name    String
-  prompts Prompt?
+  prompts Prompt[]
 
   @@map("ai_models")
 }
@@ -102,8 +102,8 @@ model User {
   flagCount        Int       @default(0) @map("flag_count")
   isFlagged        Boolean   @default(false) @map("is_flagged")
   accounts         Account[]
-  comments         Comment?
-  prompts          Prompt?
+  comments         Comment[]
+  prompts          Prompt[]
   sessions         Session[]
 
   @@map("users")
