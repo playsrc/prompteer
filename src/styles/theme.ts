@@ -1,12 +1,23 @@
 import { createTheme } from "@mui/material";
 import { RefineThemes } from "@refinedev/mui";
 
+import { Inter } from "next/font/google";
+
+export const inter = Inter({
+  subsets: ["latin"],
+});
+
 export const lightTheme = createTheme({
   ...RefineThemes.Blue,
+  typography: {
+    allVariants: {
+      fontFamily: inter.style.fontFamily,
+    },
+  },
   palette: {
     ...RefineThemes.Blue.palette,
     primary: {
-      main: "#44d0c7",
+      main: "#1976d2",
     },
     secondary: {
       main: "#2f82f1",
@@ -19,10 +30,15 @@ export const lightTheme = createTheme({
 
 export const darkTheme = createTheme({
   ...RefineThemes.BlueDark,
+  typography: {
+    allVariants: {
+      fontFamily: inter.style.fontFamily,
+    },
+  },
   palette: {
     ...RefineThemes.BlueDark.palette,
     primary: {
-      main: "#44d0c7",
+      main: "#42a5f5",
     },
     secondary: {
       main: "#2f82f1",
