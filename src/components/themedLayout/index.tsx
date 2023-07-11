@@ -37,7 +37,7 @@ export const ThemedLayoutV2: React.FC<RefineThemedLayoutV2Props> = ({
           <Box
             component="main"
             sx={{
-              p: { xs: 1, md: 2, lg: 3 },
+              // p: { xs: 1, md: 2, lg: 3 },
               flexGrow: 1,
               bgcolor: (theme) => theme.palette.background.default,
             }}

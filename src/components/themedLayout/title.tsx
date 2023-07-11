@@ -4,6 +4,7 @@ import MuiLink from "@mui/material/Link";
 import SvgIcon from "@mui/material/SvgIcon";
 import Typography from "@mui/material/Typography";
 import type { RefineLayoutThemedTitleProps } from "@refinedev/mui";
+import { Article } from "@mui/icons-material";
 
 const defaultText = "Prompteer";
 
@@ -53,7 +54,7 @@ export const ThemedTitleV2: React.FC<RefineLayoutThemedTitleProps> = ({
         ...wrapperStyles,
       }}
     >
-      <SvgIcon height="24px" width="24px" color="primary">
+      <SvgIcon fontSize="large" color="primary">
         {icon}
       </SvgIcon>
       {!collapsed && (
@@ -61,7 +62,7 @@ export const ThemedTitleV2: React.FC<RefineLayoutThemedTitleProps> = ({
           variant="h6"
           fontWeight={700}
           color="text.primary"
-          fontSize="inherit"
+          fontSize="medium"
           textOverflow="ellipsis"
           overflow="hidden"
         >

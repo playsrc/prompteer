@@ -41,7 +41,14 @@ export const ThemedHeaderV2: React.FC<RefineThemedLayoutV2HeaderProps> = ({
       color="transparent"
       elevation={0}
     >
-      <Paper elevation={0} sx={{ boxShadow: "none" }}>
+      <Paper
+        elevation={0}
+        sx={{
+          boxShadow: "none",
+          bgcolor: "transparent",
+          backdropFilter: "blur(16px)",
+        }}
+      >
         <Toolbar>
           <Stack direction="row" width="100%" alignItems="center" gap="1rem">
             <HamburgerMenu />

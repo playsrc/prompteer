@@ -217,6 +217,9 @@ export const ThemedSiderV2: React.FC<RefineThemedLayoutV2SiderProps> = ({
                 py: isNested ? 1.25 : 1,
                 justifyContent: "center",
                 color: isSelected ? "primary.main" : "text.primary",
+                borderRadius: "8px",
+                outline: isSelected ? "2px solid" : "none",
+                marginBottom: "8px",
               }}
             >
               <ListItemIcon
@@ -320,6 +323,7 @@ export const ThemedSiderV2: React.FC<RefineThemedLayoutV2SiderProps> = ({
         onClick={() => handleLogout()}
         sx={{
           justifyContent: "center",
+          borderRadius: "8px",
         }}
       >
         <ListItemIcon
@@ -474,6 +478,7 @@ export const ThemedSiderV2: React.FC<RefineThemedLayoutV2SiderProps> = ({
               overflowX: "hidden",
               overflowY: "auto",
               bgcolor: (theme) => theme.palette.background.paper,
+              paddingX: siderCollapsed ? "4px" : "16px",
             }}
           >
             {drawer}
