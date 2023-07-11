@@ -12,6 +12,7 @@ import { AppProps } from "next/app";
 import { ThemedLayoutV2 } from "@components/themedLayout";
 import { ColorModeContextProvider } from "@contexts";
 import {
+  Article,
   ForumOutlined,
   Inventory2Outlined,
   PersonOutline,
@@ -25,6 +26,7 @@ import { dataProvider } from "@refinedev/supabase";
 import { appWithTranslation, useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
 import { supabaseClient } from "src/utility";
+import { ThemedTitleV2 } from "@components/themedLayout/title";
 
 export type ExtendedNextPage = NextPage & {
   noLayout?: boolean;
@@ -177,7 +179,20 @@ const App = (props: React.PropsWithChildren) => {
               {props.children}
               <RefineKbar />
               <UnsavedChangesNotifier />
-              <DocumentTitleHandler />
+              <DocumentTitleHandler
+                handler={({ resource, action, params }) => {
+                  let title = "Prompteer"; // Default title
+
+                  if (resource) {
+                    title = `${
+                      resource.name[0].toUpperCase() + resource.name.slice(1)
+                    } • Prompteer
+                    `;
+                  }
+
+                  return title;
+                }}
+              />
             </Refine>
           </RefineSnackbarProvider>
         </ColorModeContextProvider>
@@ -196,7 +211,15 @@ function MyApp({
     }
 
     return (
-      <ThemedLayoutV2>
+      <ThemedLayoutV2
+        Title={({ collapsed }) => (
+          <ThemedTitleV2
+            collapsed={collapsed}
+            icon={<Article />}
+            text="Prompteer"
+          />
+        )}
+      >
         <Component {...pageProps} />
       </ThemedLayoutV2>
     );
