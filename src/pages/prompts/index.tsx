@@ -16,9 +16,11 @@ import {
   ForumOutlined,
   Refresh,
   SplitscreenOutlined,
+  TableRows,
   TableRowsOutlined,
   TranslateOutlined,
   ViewStream,
+  Window,
   Window as WindowIcon,
   WindowOutlined,
 } from "@mui/icons-material";
@@ -89,13 +91,13 @@ export default function PromptsList() {
               borderRadius="4px"
             >
               <Tooltip title="Grid mode">
-                <IconButton>
-                  <WindowOutlined />
+                <IconButton onClick={() => setDisplayGrid(true)}>
+                  {displayGrid ? <Window /> : <WindowOutlined />}
                 </IconButton>
               </Tooltip>
               <Tooltip title="Stack mode">
-                <IconButton>
-                  <TableRowsOutlined />
+                <IconButton onClick={() => setDisplayGrid(false)}>
+                  {displayGrid ? <TableRowsOutlined /> : <TableRows />}
                 </IconButton>
               </Tooltip>
             </Stack>
@@ -145,11 +147,13 @@ export default function PromptsList() {
         <Grid
           container
           direction={displayGrid ? "row" : "column"}
-          spacing={2}
-          justifyContent="center"
+          alignContent={displayGrid ? "center" : "unset"}
+          alignItems={displayGrid ? "center" : "unset"}
+          wrap="wrap"
+          spacing={4}
         >
           {prompts.map((prompt) => (
-            <Grid item key={prompt.id}>
+            <Grid xs={displayGrid ? 6 : 0} item key={prompt.id}>
               <Stack direction="row" spacing={2} alignItems="center" mb={2}>
                 <Avatar sx={{ width: 32, height: 32 }} />
                 <Stack direction="row" spacing={1} sx={{ opacity: "0.8" }}>
@@ -171,28 +175,34 @@ export default function PromptsList() {
                   borderRadius: "8px",
                   bgcolor: (theme) => theme.palette.background.paper,
                   // boxShadow: "0px 0px 16px 0px rgba(0,0,0,0.1)",
+                  minHeight: "180px",
                 }}
               >
-                <Box width="100%">
-                  <Typography
-                    textOverflow="ellipsis"
-                    whiteSpace="nowrap"
-                    maxWidth="500px"
-                    overflow="hidden"
-                    fontSize="20px"
-                    mb={1}
-                    fontWeight="600"
-                  >
-                    {prompt.title}
-                  </Typography>
-                  <Typography>
-                    {prompt.content.slice(0, 150) + "..."}
-                  </Typography>
+                <Stack
+                  width="100%"
+                  direction="column"
+                  justifyContent="space-between"
+                >
+                  <Box>
+                    <Typography
+                      textOverflow="ellipsis"
+                      whiteSpace="nowrap"
+                      maxWidth="500px"
+                      overflow="hidden"
+                      fontSize="20px"
+                      mb={1}
+                      fontWeight="600"
+                    >
+                      {prompt.title}
+                    </Typography>
+                    <Typography>
+                      {prompt.content.slice(0, 150) + "..."}
+                    </Typography>
+                  </Box>
                   <Stack
                     direction="row"
                     alignItems="center"
                     justifyContent="space-between"
-                    mt={4}
                   >
                     <Stack direction="row" spacing={2} alignItems="center">
                       <Stack direction="row" spacing={1} alignItems="center">
@@ -213,7 +223,7 @@ export default function PromptsList() {
                       </Stack>
                     </Stack>
                   </Stack>
-                </Box>
+                </Stack>
                 <Stack
                   sx={{
                     borderLeft: "1px solid",
