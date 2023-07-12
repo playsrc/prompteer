@@ -1,9 +1,9 @@
-import { useList } from "@refinedev/core";
+import { useList, useOne } from "@refinedev/core";
 import { GetServerSideProps } from "next";
 import { getServerSession } from "next-auth";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { authOptions } from "../api/auth/[...nextauth]";
-import { Prompt } from "@prisma/client";
+import { AiModel, Language, Prompt } from "@prisma/client";
 import Link from "next/link";
 import {
   Add,
@@ -14,6 +14,7 @@ import {
   FavoriteBorderOutlined,
   FavoriteOutlined,
   ForumOutlined,
+  LockOutlined,
   Refresh,
   SplitscreenOutlined,
   TableRows,
@@ -45,10 +46,22 @@ export default function PromptsList() {
   const { data, isLoading, isError } = useList<Prompt>({
     resource: "prompts",
   });
+  const { data: languageData, isLoading: languageIsLoading } =
+    useList<Language>({
+      resource: "languages",
+    });
+  const { data: aiModelData, isLoading: aiModelIsLoading } = useList<AiModel>({
+    resource: "ai_models",
+  });
 
   const [displayGrid, setDisplayGrid] = useState(false);
 
   const prompts = data?.data ?? [];
+  const languages = languageData?.data ?? [];
+  const aiModels = aiModelData?.data ?? [];
+
+  console.log("LANG", languages);
+  console.log("AI", aiModels);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -112,7 +125,7 @@ export default function PromptsList() {
           </Stack>
           <Stack direction="row" spacing={2} alignItems="center">
             <Button
-              startIcon={<Code />}
+              startIcon={<LockOutlined />}
               size="large"
               style={{
                 minWidth: "128px",
@@ -122,7 +135,7 @@ export default function PromptsList() {
               }}
               variant="outlined"
             >
-              API
+              Prompt
             </Button>
             <Button
               startIcon={<Add />}
@@ -152,93 +165,99 @@ export default function PromptsList() {
           wrap="wrap"
           spacing={4}
         >
-          {prompts.map((prompt) => (
-            <Grid xs={displayGrid ? 6 : 0} item key={prompt.id}>
-              <Stack direction="row" spacing={2} alignItems="center" mb={2}>
-                <Avatar sx={{ width: 32, height: 32 }} />
-                <Stack direction="row" spacing={1} sx={{ opacity: "0.8" }}>
-                  <Typography fontSize="14px">
-                    published a new prompt
-                  </Typography>
-                  <Typography fontSize="14px">•</Typography>
-                  <Typography fontSize="14px">{prompt.created_at}</Typography>
-                </Stack>
-              </Stack>
-              <Stack
-                direction="row"
-                justifyContent="space-between"
-                spacing={2}
-                sx={{
-                  p: "16px",
-                  border: "2px solid",
-                  borderColor: (theme) => theme.palette.action.selected,
-                  borderRadius: "8px",
-                  bgcolor: (theme) => theme.palette.background.paper,
-                  // boxShadow: "0px 0px 16px 0px rgba(0,0,0,0.1)",
-                  minHeight: "180px",
-                }}
-              >
-                <Stack
-                  width="100%"
-                  direction="column"
-                  justifyContent="space-between"
-                >
-                  <Box>
-                    <Typography
-                      textOverflow="ellipsis"
-                      whiteSpace="nowrap"
-                      maxWidth="500px"
-                      overflow="hidden"
-                      fontSize="20px"
-                      mb={1}
-                      fontWeight="600"
-                    >
-                      {prompt.title}
+          {prompts.map((prompt) => {
+            const aiModel = aiModels.find(
+              ({ id }) => id === prompt.ai_model_id
+            );
+
+            return (
+              <Grid xs={displayGrid ? 6 : 0} item key={prompt.id}>
+                <Stack direction="row" spacing={2} alignItems="center" mb={2}>
+                  <Avatar sx={{ width: 32, height: 32 }} />
+                  <Stack direction="row" spacing={1} sx={{ opacity: "0.8" }}>
+                    <Typography fontSize="14px">
+                      published a new prompt
                     </Typography>
-                    <Typography>
-                      {prompt.content.slice(0, 150) + "..."}
-                    </Typography>
-                  </Box>
-                  <Stack
-                    direction="row"
-                    alignItems="center"
-                    justifyContent="space-between"
-                  >
-                    <Stack direction="row" spacing={2} alignItems="center">
-                      <Stack direction="row" spacing={1} alignItems="center">
-                        <FavoriteBorderOutlined fontSize="small" />
-                        <Typography fontSize="small">
-                          {prompt.likeCount ?? 0}
-                        </Typography>
-                      </Stack>
-                      <Stack direction="row" spacing={1} alignItems="center">
-                        <ForumOutlined fontSize="small" />
-                        <Typography fontSize="small">
-                          {prompt.likeCount ?? 0}
-                        </Typography>
-                      </Stack>
-                      <Stack direction="row" spacing={1} alignItems="center">
-                        <TranslateOutlined fontSize="small" />
-                        <Typography fontSize="small">English</Typography>
-                      </Stack>
-                    </Stack>
+                    <Typography fontSize="14px">•</Typography>
+                    <Typography fontSize="14px">{prompt.created_at}</Typography>
                   </Stack>
                 </Stack>
                 <Stack
+                  direction="row"
+                  justifyContent="space-between"
+                  spacing={2}
                   sx={{
-                    borderLeft: "1px solid",
+                    p: "16px",
+                    border: "2px solid",
                     borderColor: (theme) => theme.palette.action.selected,
-                    p: "1rem",
-                    textAlign: "center",
-                    alignItems: "center",
-                    justifyContent: "center",
+                    borderRadius: "8px",
+                    bgcolor: (theme) => theme.palette.background.paper,
+                    // boxShadow: "0px 0px 16px 0px rgba(0,0,0,0.1)",
+                    minHeight: "180px",
                   }}
                 >
-                  <Typography>gpt-3.5-turbo</Typography>
+                  <Stack
+                    width="100%"
+                    direction="column"
+                    justifyContent="space-between"
+                  >
+                    <Box>
+                      <Typography
+                        textOverflow="ellipsis"
+                        whiteSpace="nowrap"
+                        maxWidth="500px"
+                        overflow="hidden"
+                        fontSize="20px"
+                        mb={1}
+                        fontWeight="600"
+                      >
+                        {prompt.title}
+                      </Typography>
+                      <Typography>
+                        {prompt.content.slice(0, 150) + "..."}
+                      </Typography>
+                    </Box>
+                    <Stack
+                      direction="row"
+                      alignItems="center"
+                      justifyContent="space-between"
+                    >
+                      <Stack direction="row" spacing={2} alignItems="center">
+                        <Stack direction="row" spacing={1} alignItems="center">
+                          <FavoriteBorderOutlined fontSize="small" />
+                          <Typography fontSize="small">
+                            {prompt.likeCount ?? 0}
+                          </Typography>
+                        </Stack>
+                        <Stack direction="row" spacing={1} alignItems="center">
+                          <ForumOutlined fontSize="small" />
+                          <Typography fontSize="small">
+                            {prompt.likeCount ?? 0}
+                          </Typography>
+                        </Stack>
+                        <Stack direction="row" spacing={1} alignItems="center">
+                          <TranslateOutlined fontSize="small" />
+                          <Typography fontSize="small">English</Typography>
+                        </Stack>
+                      </Stack>
+                    </Stack>
+                  </Stack>
+                  <Stack
+                    sx={{
+                      borderLeft: "1px solid",
+                      borderColor: (theme) => theme.palette.action.selected,
+                      p: "1rem",
+                      textAlign: "center",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Typography>{aiModel?.name}</Typography>
+                  </Stack>
                 </Stack>
-              </Stack>
-            </Grid>
-          ))}
+              </Grid>
+            );
+          })}
         </Grid>
       </Box>
     </>

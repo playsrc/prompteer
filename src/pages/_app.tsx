@@ -170,6 +170,9 @@ const App = (props: React.PropsWithChildren) => {
                   list: "/",
                   meta: { icon: <SettingsOutlined /> },
                 },
+                { name: "languages" },
+                { name: "ai_models" },
+                { name: "comments" },
               ]}
               options={{
                 syncWithLocation: true,
