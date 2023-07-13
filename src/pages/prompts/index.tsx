@@ -95,7 +95,7 @@ export default function PromptsList() {
           alignItems="center"
         >
           <Stack direction="row" spacing={2} alignItems="center">
-            <Typography fontSize="24px" fontWeight="500">
+            <Typography fontSize="24px" fontWeight="600">
               Prompts
             </Typography>
             <Tooltip title="Refresh">
@@ -244,7 +244,7 @@ export default function PromptsList() {
                           overflow="hidden"
                           fontSize="20px"
                           mb={1}
-                          fontWeight="600"
+                          fontWeight="500"
                         >
                           {prompt.title}
                         </Typography>

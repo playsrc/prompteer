@@ -7,6 +7,9 @@ import {
   Add,
   ThumbUpOutlined,
   CopyAllOutlined,
+  Article,
+  Build,
+  LibraryBooks,
 } from "@mui/icons-material";
 import {
   Box,
@@ -19,6 +22,8 @@ import {
   MenuItem,
   Button,
   LinearProgress,
+  Paper,
+  Divider,
 } from "@mui/material";
 import { Prompt } from "@prisma/client";
 import { useShow } from "@refinedev/core";
@@ -56,8 +61,15 @@ export default function PromptShow() {
           alignItems="center"
         >
           <Stack direction="row" spacing={2} alignItems="center">
-            <Typography fontSize="24px" fontWeight="500">
-              Prompts
+            <Typography
+              fontSize="24px"
+              fontWeight="600"
+              textOverflow="ellipsis"
+              whiteSpace="nowrap"
+              maxWidth="500px"
+              overflow="hidden"
+            >
+              {prompt?.title}
             </Typography>
             <Tooltip title="Refresh">
               <IconButton onClick={() => refetch()}>
@@ -96,7 +108,7 @@ export default function PromptShow() {
       </Box>
       <Box
         sx={{
-          p: { xs: 1, md: 2, lg: 3 },
+          px: { xs: 1, md: 2, lg: 3 },
         }}
       >
         {isLoading ? (
@@ -104,14 +116,50 @@ export default function PromptShow() {
             <LinearProgress />
           </>
         ) : (
-          <div>
-            <p>
-              <strong>Prompt details </strong>
-            </p>
-            <p>id: {prompt?.id}</p>
-            <p>title: {prompt?.title}</p>
-            <p>content: {prompt?.content}</p>
-          </div>
+          <Stack
+            spacing={3}
+            sx={{
+              p: "16px",
+              border: "2px solid",
+              borderColor: (theme) => theme.palette.action.selected,
+              borderRadius: "8px",
+              backgroundColor: (theme) => theme.palette.background.paper,
+              // boxShadow: "0px 0px 16px 0px rgba(0,0,0,0.1)",
+            }}
+          >
+            <Stack spacing={1}>
+              <Stack spacing={1} direction="row" alignItems="center">
+                <Article fontSize="small" />
+                <Typography fontSize="20px" fontWeight="500">
+                  Prompt
+                </Typography>
+              </Stack>
+              <Typography variant="body1">{prompt?.content}</Typography>
+            </Stack>
+
+            {prompt?.parameter && (
+              <Stack spacing={1}>
+                <Stack spacing={1} direction="row" alignItems="center">
+                  <Build fontSize="small" />
+                  <Typography fontSize="20px" fontWeight="500">
+                    Parameters
+                  </Typography>
+                </Stack>
+                <Typography variant="body1">{prompt?.parameter}</Typography>
+              </Stack>
+            )}
+            {prompt?.detail && (
+              <Stack spacing={1}>
+                <Stack spacing={1} direction="row" alignItems="center">
+                  <LibraryBooks fontSize="small" />
+                  <Typography fontSize="20px" fontWeight="500">
+                    Details
+                  </Typography>
+                </Stack>
+                <Typography variant="body1">{prompt?.detail}</Typography>
+              </Stack>
+            )}
+          </Stack>
         )}
       </Box>
     </>
