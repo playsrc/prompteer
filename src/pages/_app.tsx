@@ -173,6 +173,7 @@ const App = (props: React.PropsWithChildren) => {
                 { name: "languages" },
                 { name: "ai_models" },
                 { name: "comments" },
+                { name: "users" },
               ]}
               options={{
                 syncWithLocation: true,
