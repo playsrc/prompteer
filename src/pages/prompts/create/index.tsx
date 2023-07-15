@@ -6,14 +6,32 @@ import { authOptions } from "src/pages/api/auth/[...nextauth]";
 import {
   Autocomplete,
   Box,
+  Button,
   Checkbox,
+  Chip,
   FormControlLabel,
+  IconButton,
+  LinearProgress,
+  Stack,
   TextField,
+  Tooltip,
+  Typography,
 } from "@mui/material";
 import { IResourceComponentsProps, useTranslate } from "@refinedev/core";
 import { Create, useAutocomplete } from "@refinedev/mui";
 import { useForm } from "@refinedev/react-hook-form";
 import { Controller } from "react-hook-form";
+import {
+  FavoriteBorderOutlined,
+  CopyAllOutlined,
+  CancelOutlined,
+  CreateOutlined,
+  SaveOutlined,
+  Refresh,
+  DeleteOutline,
+  Build,
+  LibraryBooks,
+} from "@mui/icons-material";
 
 export default function PromptCreate() {
   const translate = useTranslate();
@@ -38,246 +56,261 @@ export default function PromptCreate() {
   });
 
   return (
-    <Create isLoading={formLoading} saveButtonProps={saveButtonProps}>
+    <>
       <Box
-        component="form"
-        sx={{ display: "flex", flexDirection: "column" }}
-        autoComplete="off"
+        sx={{
+          p: { xs: 1, md: 2, lg: 3 },
+          // bgcolor: (theme) => theme.palette.background.paper,
+          // minHeight: "150px",
+        }}
       >
-        <Controller
-          control={control}
-          name="user_id"
-          rules={{ required: "This field is required" }}
-          // eslint-disable-next-line
-          defaultValue={null as any}
-          render={({ field }) => (
-            <Autocomplete
-              {...userAutocompleteProps}
-              {...field}
-              onChange={(_, value) => {
-                field.onChange(value?.id ?? value);
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <Stack direction="row" spacing={2} alignItems="center">
+            <Typography
+              fontSize="24px"
+              fontWeight="600"
+              textOverflow="ellipsis"
+              whiteSpace="nowrap"
+              maxWidth="500px"
+              overflow="hidden"
+            >
+              New prompt
+            </Typography>
+            <Tooltip title="Refresh">
+              <IconButton>
+                <Refresh />
+              </IconButton>
+            </Tooltip>
+          </Stack>
+          <Stack direction="row" spacing={2} alignItems="center">
+            <Button
+              startIcon={<DeleteOutline />}
+              size="large"
+              style={{
+                minWidth: "128px",
+                textTransform: "capitalize",
+                border: "none",
+                outline: "2px solid",
               }}
-              getOptionLabel={(item) => {
-                return (
-                  userAutocompleteProps?.options?.find(
-                    (p) => p?.id?.toString() === (item?.id ?? item)?.toString()
-                  )?.name ?? ""
-                );
+              variant="outlined"
+            >
+              Cancel
+            </Button>
+            <Button
+              startIcon={<SaveOutlined />}
+              size="large"
+              style={{
+                minWidth: "128px",
+                textTransform: "capitalize",
+                boxShadow: "none",
               }}
-              isOptionEqualToValue={(option, value) =>
-                value === undefined ||
-                option?.id?.toString() === (value?.id ?? value)?.toString()
-              }
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label={translate("prompts.fields.user_id")}
-                  margin="normal"
-                  variant="outlined"
-                  error={!!(errors as any)?.user_id}
-                  helperText={(errors as any)?.user_id?.message}
-                  required
-                />
-              )}
-            />
-          )}
-        />
-        <Controller
-          control={control}
-          name="language_id"
-          rules={{ required: "This field is required" }}
-          // eslint-disable-next-line
-          defaultValue={null as any}
-          render={({ field }) => (
-            <Autocomplete
-              {...languageAutocompleteProps}
-              {...field}
-              onChange={(_, value) => {
-                field.onChange(value?.id ?? value);
-              }}
-              getOptionLabel={(item) => {
-                return (
-                  languageAutocompleteProps?.options?.find(
-                    (p) => p?.id?.toString() === (item?.id ?? item)?.toString()
-                  )?.name ?? ""
-                );
-              }}
-              isOptionEqualToValue={(option, value) =>
-                value === undefined ||
-                option?.id?.toString() === (value?.id ?? value)?.toString()
-              }
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label={translate("prompts.fields.language_id")}
-                  margin="normal"
-                  variant="outlined"
-                  error={!!(errors as any)?.language_id}
-                  helperText={(errors as any)?.language_id?.message}
-                  required
-                />
-              )}
-            />
-          )}
-        />
-        <TextField
-          {...register("title", {
-            required: "This field is required",
-          })}
-          error={!!(errors as any)?.title}
-          helperText={(errors as any)?.title?.message}
-          margin="normal"
-          fullWidth
-          InputLabelProps={{ shrink: true }}
-          type="text"
-          label={translate("prompts.fields.title")}
-          name="title"
-        />
-        <TextField
-          {...register("content", {
-            required: "This field is required",
-          })}
-          error={!!(errors as any)?.content}
-          helperText={(errors as any)?.content?.message}
-          margin="normal"
-          fullWidth
-          InputLabelProps={{ shrink: true }}
-          type="text"
-          label={translate("prompts.fields.content")}
-          name="content"
-        />
-        <TextField
-          {...register("parameter", {
-            required: "This field is required",
-          })}
-          error={!!(errors as any)?.parameter}
-          helperText={(errors as any)?.parameter?.message}
-          margin="normal"
-          fullWidth
-          InputLabelProps={{ shrink: true }}
-          type="text"
-          label={translate("prompts.fields.parameter")}
-          name="parameter"
-        />
-        <TextField
-          {...register("detail", {
-            required: "This field is required",
-          })}
-          error={!!(errors as any)?.detail}
-          helperText={(errors as any)?.detail?.message}
-          margin="normal"
-          fullWidth
-          InputLabelProps={{ shrink: true }}
-          type="text"
-          label={translate("prompts.fields.detail")}
-          name="detail"
-        />
-        <TextField
-          {...register("like_count", {
-            required: "This field is required",
-            valueAsNumber: true,
-          })}
-          error={!!(errors as any)?.like_count}
-          helperText={(errors as any)?.like_count?.message}
-          margin="normal"
-          fullWidth
-          InputLabelProps={{ shrink: true }}
-          type="number"
-          label={translate("prompts.fields.like_count")}
-          name="like_count"
-        />
-        <TextField
-          {...register("flag_count", {
-            required: "This field is required",
-            valueAsNumber: true,
-          })}
-          error={!!(errors as any)?.flag_count}
-          helperText={(errors as any)?.flag_count?.message}
-          margin="normal"
-          fullWidth
-          InputLabelProps={{ shrink: true }}
-          type="number"
-          label={translate("prompts.fields.flag_count")}
-          name="flag_count"
-        />
-        <Controller
-          control={control}
-          name="is_flagged"
-          // eslint-disable-next-line
-          defaultValue={null as any}
-          render={({ field }) => (
-            <FormControlLabel
-              label={translate("prompts.fields.is_flagged")}
-              control={
-                <Checkbox
-                  {...field}
-                  checked={field.value}
-                  onChange={(event) => {
-                    field.onChange(event.target.checked);
-                  }}
-                />
-              }
-            />
-          )}
-        />
-        {/*
-                    DatePicker component is not included in "@refinedev/mui" package.
-                    To use a <DatePicker> component, you can follow the official documentation for Material UI.
-
-                    Docs: https://mui.com/x/react-date-pickers/date-picker/#basic-usage
-                */}
-        <TextField
-          {...register("created_at", {
-            required: "This field is required",
-          })}
-          error={!!(errors as any)?.created_at}
-          helperText={(errors as any)?.created_at?.message}
-          margin="normal"
-          fullWidth
-          InputLabelProps={{ shrink: true }}
-          label={translate("prompts.fields.created_at")}
-          name="created_at"
-        />
-        <Controller
-          control={control}
-          name="ai_model_id"
-          rules={{ required: "This field is required" }}
-          // eslint-disable-next-line
-          defaultValue={null as any}
-          render={({ field }) => (
-            <Autocomplete
-              {...aiModelAutocompleteProps}
-              {...field}
-              onChange={(_, value) => {
-                field.onChange(value?.id ?? value);
-              }}
-              getOptionLabel={(item) => {
-                return (
-                  aiModelAutocompleteProps?.options?.find(
-                    (p) => p?.id?.toString() === (item?.id ?? item)?.toString()
-                  )?.name ?? ""
-                );
-              }}
-              isOptionEqualToValue={(option, value) =>
-                value === undefined ||
-                option?.id?.toString() === (value?.id ?? value)?.toString()
-              }
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label={translate("prompts.fields.ai_model_id")}
-                  margin="normal"
-                  variant="outlined"
-                  error={!!(errors as any)?.ai_model_id}
-                  helperText={(errors as any)?.ai_model_id?.message}
-                  required
-                />
-              )}
-            />
-          )}
-        />
+              variant="contained"
+            >
+              Save
+            </Button>
+          </Stack>
+        </Stack>
       </Box>
-    </Create>
+      <Box
+        sx={{
+          px: { xs: 1, md: 2, lg: 3 },
+        }}
+      >
+        {formLoading ? (
+          <Box>
+            <LinearProgress />
+          </Box>
+        ) : (
+          <Stack
+            spacing={3}
+            sx={{
+              p: "16px",
+              border: "2px solid",
+              borderColor: (theme) => theme.palette.action.selected,
+              borderRadius: "8px",
+              backgroundColor: (theme) => theme.palette.background.paper,
+              // boxShadow: "0px 0px 16px 0px rgba(0,0,0,0.1)",
+            }}
+          >
+            <Box
+              component="form"
+              sx={{ display: "flex", gap: "16px", flexDirection: "column" }}
+              autoComplete="off"
+            >
+              <Stack spacing={1}>
+                <Typography fontSize="20px" fontWeight="500">
+                  Title
+                </Typography>
+                <TextField
+                  {...register("title", {
+                    required: "This field is required",
+                  })}
+                  error={!!(errors as any)?.title}
+                  helperText={(errors as any)?.title?.message}
+                  margin="normal"
+                  fullWidth
+                  InputLabelProps={{ shrink: true }}
+                  type="text"
+                  name="title"
+                />
+              </Stack>
+
+              <Stack spacing={1}>
+                <Typography fontSize="20px" fontWeight="500">
+                  Prompt
+                </Typography>
+                <TextField
+                  {...register("content", {
+                    required: "This field is required",
+                  })}
+                  error={!!(errors as any)?.content}
+                  helperText={(errors as any)?.content?.message}
+                  margin="normal"
+                  fullWidth
+                  InputLabelProps={{ shrink: true }}
+                  type="text"
+                  name="content"
+                  multiline
+                  rows={3}
+                />
+              </Stack>
+
+              <Stack spacing={1}>
+                <Typography fontSize="20px" fontWeight="500">
+                  Parameters
+                </Typography>
+                <TextField
+                  {...register("parameter", {
+                    required: "This field is required",
+                  })}
+                  error={!!(errors as any)?.parameter}
+                  helperText={(errors as any)?.parameter?.message}
+                  margin="normal"
+                  fullWidth
+                  InputLabelProps={{ shrink: true }}
+                  type="text"
+                  name="parameter"
+                  multiline
+                  rows={3}
+                />
+              </Stack>
+
+              <Stack spacing={1}>
+                <Typography fontSize="20px" fontWeight="500">
+                  Details
+                </Typography>
+                <TextField
+                  {...register("detail", {
+                    required: "This field is required",
+                  })}
+                  error={!!(errors as any)?.detail}
+                  helperText={(errors as any)?.detail?.message}
+                  margin="normal"
+                  fullWidth
+                  InputLabelProps={{ shrink: true }}
+                  type="text"
+                  name="detail"
+                  multiline
+                  rows={3}
+                />
+              </Stack>
+              <Stack direction="row" spacing={2} width="100%">
+                <Controller
+                  control={control}
+                  name="ai_model_id"
+                  rules={{ required: "This field is required" }}
+                  // eslint-disable-next-line
+                  defaultValue={null as any}
+                  render={({ field }) => (
+                    <Autocomplete
+                      fullWidth
+                      {...aiModelAutocompleteProps}
+                      {...field}
+                      onChange={(_, value) => {
+                        field.onChange(value?.id ?? value);
+                      }}
+                      getOptionLabel={(item) => {
+                        return (
+                          aiModelAutocompleteProps?.options?.find(
+                            (p) =>
+                              p?.id?.toString() ===
+                              (item?.id ?? item)?.toString()
+                          )?.name ?? ""
+                        );
+                      }}
+                      isOptionEqualToValue={(option, value) =>
+                        value === undefined ||
+                        option?.id?.toString() ===
+                          (value?.id ?? value)?.toString()
+                      }
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label="AI Model"
+                          margin="normal"
+                          variant="outlined"
+                          error={!!(errors as any)?.ai_model_id}
+                          helperText={(errors as any)?.ai_model_id?.message}
+                          required
+                          fullWidth
+                        />
+                      )}
+                    />
+                  )}
+                />
+                <Controller
+                  control={control}
+                  name="language_id"
+                  rules={{ required: "This field is required" }}
+                  // eslint-disable-next-line
+                  defaultValue={null as any}
+                  render={({ field }) => (
+                    <Autocomplete
+                      fullWidth
+                      {...languageAutocompleteProps}
+                      {...field}
+                      onChange={(_, value) => {
+                        field.onChange(value?.id ?? value);
+                      }}
+                      getOptionLabel={(item) => {
+                        return (
+                          languageAutocompleteProps?.options?.find(
+                            (p) =>
+                              p?.id?.toString() ===
+                              (item?.id ?? item)?.toString()
+                          )?.name ?? ""
+                        );
+                      }}
+                      isOptionEqualToValue={(option, value) =>
+                        value === undefined ||
+                        option?.id?.toString() ===
+                          (value?.id ?? value)?.toString()
+                      }
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label="Language"
+                          margin="normal"
+                          variant="outlined"
+                          error={!!(errors as any)?.language_id}
+                          helperText={(errors as any)?.language_id?.message}
+                          required
+                          fullWidth
+                        />
+                      )}
+                    />
+                  )}
+                />
+              </Stack>
+            </Box>
+          </Stack>
+        )}
+      </Box>
+    </>
   );
 }
 
@@ -291,7 +324,7 @@ export const getServerSideProps: GetServerSideProps<{}> = async (context) => {
   if (!session) {
     return {
       redirect: {
-        destination: "/login?to=/dashboard",
+        destination: "/login?to=/prompts",
         permanent: false,
       },
     };

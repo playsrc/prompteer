@@ -161,6 +161,11 @@ export default function PromptShow() {
             >
               {prompt?.title}
             </Typography>
+            <Tooltip title="Refresh">
+              <IconButton>
+                <Refresh />
+              </IconButton>
+            </Tooltip>
             <Tooltip title="AI model used">
               <Chip variant="outlined" label={aiModel?.name} />
             </Tooltip>

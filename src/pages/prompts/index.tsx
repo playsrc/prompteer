@@ -1,4 +1,4 @@
-import { useList, useOne } from "@refinedev/core";
+import { useGo, useList, useOne } from "@refinedev/core";
 import { GetServerSideProps } from "next";
 import { getServerSession } from "next-auth";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
@@ -51,6 +51,8 @@ import relativeTime from "dayjs/plugin/relativeTime";
 dayjs.extend(relativeTime);
 
 export default function PromptsList() {
+  const go = useGo();
+
   const { data, isLoading, isError, refetch, isRefetching } = useList<Prompt>({
     resource: "prompts",
   });
@@ -155,6 +157,12 @@ export default function PromptsList() {
                 boxShadow: "none",
               }}
               variant="contained"
+              onClick={() => {
+                go({
+                  to: "/prompts/create",
+                  type: "push",
+                });
+              }}
             >
               Prompt
             </Button>
