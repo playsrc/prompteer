@@ -14,6 +14,9 @@ import {
   ModeCommentOutlined,
   EditOutlined,
   DeleteOutline,
+  WarningOutlined,
+  ReportOutlined,
+  ReportProblemOutlined,
 } from "@mui/icons-material";
 import {
   Box,
@@ -36,7 +39,9 @@ import { AiModel, Comment, Language, Prompt, User } from "@prisma/client";
 import {
   useCreate,
   useDelete,
+  useGo,
   useList,
+  useNavigation,
   useOne,
   useShow,
 } from "@refinedev/core";
@@ -52,6 +57,7 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
+import { formatDistanceToNow } from "date-fns";
 
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
@@ -71,14 +77,14 @@ export default function PromptShow() {
   const { data: languageData, isLoading: languageIsLoading } = useOne<Language>(
     {
       resource: "languages",
-      id: prompt?.language_id ?? "",
+      id: prompt?.language_id,
     }
   );
   const language = languageData?.data;
 
   const { data: userData, isLoading: userIsLoading } = useOne<User>({
     resource: "users",
-    id: prompt?.user_id ?? "",
+    id: prompt?.user_id,
   });
   const user = userData?.data;
 
@@ -89,7 +95,7 @@ export default function PromptShow() {
 
   const { data: aiModelData, isLoading: aiModelIsLoading } = useOne<AiModel>({
     resource: "ai_models",
-    id: prompt?.ai_model_id ?? "",
+    id: prompt?.ai_model_id,
   });
   const aiModel = aiModelData?.data;
 
@@ -97,8 +103,17 @@ export default function PromptShow() {
     resource: "comments",
   });
 
+  const { goBack } = useNavigation();
   const { mutate: deleteMutation } = useDelete();
   const { mutate: createMutation } = useCreate();
+
+  function handleDeletePrompt(id: string) {
+    deleteMutation({
+      resource: "prompts",
+      id: id,
+    });
+    goBack();
+  }
 
   function handleDeleteComment(id: string) {
     deleteMutation({
@@ -129,8 +144,8 @@ export default function PromptShow() {
 
   const comments = commentData?.data ?? [];
 
-  if (isLoading) {
-    return <div>Loading...</div>;
+  if (isLoading || aiModelIsLoading || languageIsLoading) {
+    return <LinearProgress />;
   }
 
   if (isError) {
@@ -186,11 +201,13 @@ export default function PromptShow() {
                     outline: "2px solid",
                   }}
                   variant="outlined"
+                  color="error"
+                  onClick={() => handleDeletePrompt(prompt?.id || "")}
                 >
                   Delete
                 </Button>
                 <Button
-                  startIcon={<EditOutlined />}
+                  startIcon={<CopyAllOutlined />}
                   size="large"
                   style={{
                     minWidth: "128px",
@@ -198,13 +215,17 @@ export default function PromptShow() {
                     boxShadow: "none",
                   }}
                   variant="contained"
+                  onClick={() => {
+                    navigator.clipboard.writeText(prompt?.content || "");
+                    alert("Prompt content copied!");
+                  }}
                 >
-                  Edit
+                  Copy
                 </Button>
               </>
             ) : (
               <>
-                <Button
+                {/* <Button
                   startIcon={<FavoriteBorderOutlined />}
                   size="large"
                   style={{
@@ -216,7 +237,7 @@ export default function PromptShow() {
                   variant="outlined"
                 >
                   Like
-                </Button>
+                </Button> */}
                 <Button
                   startIcon={<CopyAllOutlined />}
                   size="large"
@@ -226,6 +247,10 @@ export default function PromptShow() {
                     boxShadow: "none",
                   }}
                   variant="contained"
+                  onClick={() => {
+                    navigator.clipboard.writeText(prompt?.content || "");
+                    alert("Prompt content copied!");
+                  }}
                 >
                   Copy
                 </Button>
@@ -268,9 +293,11 @@ export default function PromptShow() {
                     Prompt
                   </Typography>
                 </Stack>
-                <Button variant="text" color="error">
-                  Report
-                </Button>
+                {/* <Tooltip title="Report content">
+                  <IconButton>
+                    <ReportProblemOutlined color="error" />
+                  </IconButton>
+                </Tooltip> */}
               </Stack>
               <Typography variant="body1">{prompt?.content}</Typography>
             </Stack>
@@ -297,8 +324,8 @@ export default function PromptShow() {
                 <Typography variant="body1">{prompt?.detail}</Typography>
               </Stack>
             )}
-            <Stack direction="row" spacing={2} alignItems="center">
-              <Stack
+            <Stack direction="row" spacing={1} alignItems="center">
+              {/* <Stack
                 direction="row"
                 spacing={1}
                 border="1px solid"
@@ -310,22 +337,24 @@ export default function PromptShow() {
               >
                 <FavoriteBorderOutlined fontSize="small" />
                 <Typography fontSize="small">{prompt.like_count}</Typography>
-              </Stack>
-              <Typography fontSize="14px">•</Typography>
+              </Stack> */}
               <Typography fontSize="14px">{user?.name}</Typography>
+              <Typography fontSize="14px">•</Typography>
               <Typography fontSize="14px">
-                {dayjs(prompt?.created_at).fromNow()}
+                {formatDistanceToNow(
+                  dayjs(prompt?.created_at).utc(true).toDate(),
+                  { addSuffix: true }
+                )}
               </Typography>
             </Stack>
             <Divider />
 
             <Stack alignItems="center" direction="row" spacing={2}>
-              <Typography fontSize="20px" fontWeight="500">
-                Comments
-              </Typography>
-              <Stack direction="row" spacing={1}>
+              <Stack direction="row" spacing={1} alignItems="center">
                 <ModeCommentOutlined fontSize="small" />
-                <Typography fontSize="small">{prompt.like_count}</Typography>
+                <Typography fontSize="20px" fontWeight="500">
+                  Comments
+                </Typography>
               </Stack>
             </Stack>
 
@@ -378,21 +407,20 @@ export default function PromptShow() {
                         <Typography>{commentUser?.name}</Typography>
                         <Typography>•</Typography>
                         <Typography fontSize="14px">
-                          {dayjs(comment.created_at).fromNow()}
+                          {formatDistanceToNow(
+                            dayjs(comment.created_at).utc(true).toDate(),
+                            { addSuffix: true }
+                          )}
                         </Typography>
                       </Stack>
-                      {comment.user_id === session?.user?.id ? (
-                        <Button
-                          onClick={() => handleDeleteComment(comment.id)}
-                          variant="text"
-                          color="error"
-                        >
-                          Delete
-                        </Button>
-                      ) : (
-                        <Button variant="text" color="error">
-                          Report
-                        </Button>
+                      {comment.user_id === session?.user?.id && (
+                        <Tooltip title="Delete comment">
+                          <IconButton
+                            onClick={() => handleDeleteComment(comment.id)}
+                          >
+                            <DeleteOutline color="error" />
+                          </IconButton>
+                        </Tooltip>
                       )}
                     </Stack>
                     <Typography>{comment?.content}</Typography>

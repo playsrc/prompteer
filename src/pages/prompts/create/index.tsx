@@ -1,5 +1,5 @@
 import { GetServerSideProps } from "next";
-import { getServerSession } from "next-auth";
+import { User, getServerSession } from "next-auth";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { authOptions } from "src/pages/api/auth/[...nextauth]";
 
@@ -17,7 +17,13 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import { IResourceComponentsProps, useTranslate } from "@refinedev/core";
+import {
+  IResourceComponentsProps,
+  useCreate,
+  useNavigation,
+  useOne,
+  useTranslate,
+} from "@refinedev/core";
 import { Create, useAutocomplete } from "@refinedev/mui";
 import { useForm } from "@refinedev/react-hook-form";
 import { Controller } from "react-hook-form";
@@ -32,8 +38,19 @@ import {
   Build,
   LibraryBooks,
 } from "@mui/icons-material";
+import { useSession } from "next-auth/react";
 
 export default function PromptCreate() {
+  const { data: session } = useSession();
+  const { mutate } = useCreate();
+  const { goBack } = useNavigation();
+
+  const { data: userData } = useOne({
+    resource: "users",
+    id: session?.user?.id,
+  });
+  const user = userData?.data;
+
   const translate = useTranslate();
   const {
     saveButtonProps,
@@ -41,11 +58,20 @@ export default function PromptCreate() {
     register,
     control,
     formState: { errors },
+    handleSubmit,
   } = useForm();
 
-  const { autocompleteProps: userAutocompleteProps } = useAutocomplete({
-    resource: "users",
-  });
+  function onSubmit(data: any) {
+    mutate({
+      resource: "prompts",
+      values: {
+        ...data,
+        created_at: new Date().toISOString(),
+        user_id: session?.user?.id,
+      },
+    });
+    goBack();
+  }
 
   const { autocompleteProps: languageAutocompleteProps } = useAutocomplete({
     resource: "languages",
@@ -109,6 +135,8 @@ export default function PromptCreate() {
                 boxShadow: "none",
               }}
               variant="contained"
+              form="form"
+              type="submit"
             >
               Save
             </Button>
@@ -137,14 +165,14 @@ export default function PromptCreate() {
             }}
           >
             <Box
+              id="form"
               component="form"
               sx={{ display: "flex", gap: "16px", flexDirection: "column" }}
               autoComplete="off"
+              onSubmit={handleSubmit(onSubmit)}
             >
               <Stack spacing={1}>
-                <Typography fontSize="20px" fontWeight="500">
-                  Title
-                </Typography>
+                <Typography>Title</Typography>
                 <TextField
                   {...register("title", {
                     required: "This field is required",
@@ -160,9 +188,7 @@ export default function PromptCreate() {
               </Stack>
 
               <Stack spacing={1}>
-                <Typography fontSize="20px" fontWeight="500">
-                  Prompt
-                </Typography>
+                <Typography>Prompt</Typography>
                 <TextField
                   {...register("content", {
                     required: "This field is required",
@@ -179,45 +205,45 @@ export default function PromptCreate() {
                 />
               </Stack>
 
-              <Stack spacing={1}>
-                <Typography fontSize="20px" fontWeight="500">
-                  Parameters
-                </Typography>
-                <TextField
-                  {...register("parameter", {
-                    required: "This field is required",
-                  })}
-                  error={!!(errors as any)?.parameter}
-                  helperText={(errors as any)?.parameter?.message}
-                  margin="normal"
-                  fullWidth
-                  InputLabelProps={{ shrink: true }}
-                  type="text"
-                  name="parameter"
-                  multiline
-                  rows={3}
-                />
-              </Stack>
+              {user?.subscription !== "free" && (
+                <Stack spacing={1}>
+                  <Typography>Parameters</Typography>
+                  <TextField
+                    {...register("parameter", {
+                      required: "This field is required",
+                    })}
+                    error={!!(errors as any)?.parameter}
+                    helperText={(errors as any)?.parameter?.message}
+                    margin="normal"
+                    fullWidth
+                    InputLabelProps={{ shrink: true }}
+                    type="text"
+                    name="parameter"
+                    multiline
+                    rows={3}
+                  />
+                </Stack>
+              )}
 
-              <Stack spacing={1}>
-                <Typography fontSize="20px" fontWeight="500">
-                  Details
-                </Typography>
-                <TextField
-                  {...register("detail", {
-                    required: "This field is required",
-                  })}
-                  error={!!(errors as any)?.detail}
-                  helperText={(errors as any)?.detail?.message}
-                  margin="normal"
-                  fullWidth
-                  InputLabelProps={{ shrink: true }}
-                  type="text"
-                  name="detail"
-                  multiline
-                  rows={3}
-                />
-              </Stack>
+              {user?.subscription === "pro" && (
+                <Stack spacing={1}>
+                  <Typography>Details</Typography>
+                  <TextField
+                    {...register("detail", {
+                      required: "This field is required",
+                    })}
+                    error={!!(errors as any)?.detail}
+                    helperText={(errors as any)?.detail?.message}
+                    margin="normal"
+                    fullWidth
+                    InputLabelProps={{ shrink: true }}
+                    type="text"
+                    name="detail"
+                    multiline
+                    rows={3}
+                  />
+                </Stack>
+              )}
               <Stack direction="row" spacing={2} width="100%">
                 <Controller
                   control={control}

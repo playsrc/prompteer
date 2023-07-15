@@ -16,6 +16,7 @@ import {
   LockOutlined,
   ModeCommentOutlined,
   Refresh,
+  SettingsOutlined,
   SplitscreenOutlined,
   TableRows,
   TableRowsOutlined,
@@ -47,11 +48,19 @@ import { useState } from "react";
 
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import utc from "dayjs/plugin/utc";
+import tz from "dayjs/plugin/timezone";
+
+import { formatDistanceToNow } from "date-fns";
 
 dayjs.extend(relativeTime);
+dayjs.extend(utc);
+dayjs.extend(tz);
+dayjs.tz.setDefault("America/Sao_Paulo");
 
 export default function PromptsList() {
   const go = useGo();
+  const timeZone = dayjs.tz.guess();
 
   const { data, isLoading, isError, refetch, isRefetching } = useList<Prompt>({
     resource: "prompts",
@@ -135,7 +144,7 @@ export default function PromptsList() {
             </FormControl>
           </Stack>
           <Stack direction="row" spacing={2} alignItems="center">
-            <Button
+            {/* <Button
               startIcon={<LockOutlined />}
               size="large"
               style={{
@@ -147,7 +156,7 @@ export default function PromptsList() {
               variant="outlined"
             >
               Prompt
-            </Button>
+            </Button> */}
             <Button
               startIcon={<Add />}
               size="large"
@@ -208,7 +217,10 @@ export default function PromptsList() {
                       <Typography fontSize="14px">{user?.name}</Typography>
                       <Typography fontSize="14px">•</Typography>
                       <Typography fontSize="14px">
-                        {dayjs(prompt.created_at).fromNow()}
+                        {formatDistanceToNow(
+                          dayjs(prompt?.created_at).utc(true).toDate(),
+                          { addSuffix: true }
+                        )}
                       </Typography>
                     </Stack>
                   </Stack>
@@ -271,7 +283,7 @@ export default function PromptsList() {
                           alignItems="center"
                           sx={{ opacity: "0.8" }}
                         >
-                          <Stack
+                          {/* <Stack
                             direction="row"
                             spacing={1}
                             alignItems="center"
@@ -290,6 +302,16 @@ export default function PromptsList() {
                             <Typography fontSize="small">
                               {prompt?.like_count ?? 0}
                             </Typography>
+                          </Stack> */}
+                          <Stack
+                            direction="row"
+                            spacing={1}
+                            alignItems="center"
+                          >
+                            <SettingsOutlined fontSize="small" />
+                            <Typography fontSize="small">
+                              {aiModel?.name}
+                            </Typography>
                           </Stack>
                           <Stack
                             direction="row"
@@ -303,19 +325,6 @@ export default function PromptsList() {
                           </Stack>
                         </Stack>
                       </Stack>
-                    </Stack>
-                    <Stack
-                      sx={{
-                        borderLeft: "1px solid",
-                        borderColor: (theme) => theme.palette.action.selected,
-                        p: "1rem",
-                        textAlign: "center",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        minWidth: "150px",
-                      }}
-                    >
-                      <Typography>{aiModel?.name}</Typography>
                     </Stack>
                   </Link>
                 </Grid>
