@@ -135,14 +135,6 @@ const App = (props: React.PropsWithChildren) => {
               i18nProvider={i18nProvider}
               resources={[
                 {
-                  name: "dashboard",
-                  list: "/dashboard",
-                  meta: {
-                    label: "Dashboard",
-                    icon: <SpaceDashboardOutlined />,
-                  },
-                },
-                {
                   name: "prompts",
                   list: "/prompts",
                   create: "/prompts/create",
