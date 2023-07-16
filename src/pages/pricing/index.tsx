@@ -22,8 +22,7 @@ interface PricingProps {
   proPrice: string;
 }
 
-// TODO hasAuth
-export default function PricingPage({ hasAuth, plusPrice, proPrice }: PricingProps) {
+export default function PricingPage({ plusPrice, proPrice }: PricingProps) {
   const go = useGo();
   return (
     <Container
@@ -247,8 +246,6 @@ export default function PricingPage({ hasAuth, plusPrice, proPrice }: PricingPro
 PricingPage.noLayout = true;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getServerSession(context.req, context.res, authOptions);
-
   const translateProps = await serverSideTranslations(context.locale ?? "en", [
     "common",
   ]);
@@ -271,22 +268,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     currency: "USD",
   }).format(proPriceRaw.unit_amount! / 100);
 
-  if (!session) {
-    return {
-      props: {
-        plusPrice,
-        proPrice,
-        hasAuth: true
-        ...translateProps,
-      },
-    };
-  }
-
   return {
     props: {
       plusPrice,
       proPrice,
-      hasAuth: false
       ...translateProps,
     },
   };

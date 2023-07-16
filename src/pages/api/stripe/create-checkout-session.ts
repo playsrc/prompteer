@@ -17,12 +17,14 @@ export default async (
 
   // Error handling
   if (!session?.user) {
-    return res.status(401).json({
-      error: {
-        code: "no-access",
-        message: "You are not signed in.",
-      },
-    });
+    res.status(307).redirect("/login");
+    return;
+    // return res.status(401).json({
+    //   error: {
+    //     code: "no-access",
+    //     message: "You are not signed in.",
+    //   },
+    // });
   }
 
   const checkoutSession = await stripe.checkout.sessions.create({
