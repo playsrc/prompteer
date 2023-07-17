@@ -54,6 +54,7 @@ export const ThemedHeaderV2: React.FC<RefineThemedLayoutV2HeaderProps> = ({
             <HamburgerMenu />
             <FormControl fullWidth>
               <TextField
+                color="primary"
                 size="small"
                 variant="outlined"
                 placeholder="Search"
@@ -65,6 +66,10 @@ export const ThemedHeaderV2: React.FC<RefineThemedLayoutV2HeaderProps> = ({
                     borderRadius: "30px",
                   },
                   display: { xs: "none", md: "flex" },
+                  input: {
+                    borderRadius: "30px",
+                    background: (theme) => theme.palette.background.paper,
+                  },
                 }}
               />
             </FormControl>
