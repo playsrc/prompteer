@@ -116,11 +116,10 @@ export default function PricingPage({ plusPrice, proPrice }: PricingProps) {
               <ul>
                 <li>Publish Prompts</li>
                 <li>Write Comments</li>
-                <li>Favorite Prompts</li>
               </ul>
             </Stack>
           </Stack>
-          <Stack
+          {/* <Stack
             minWidth="300px"
             minHeight="470px"
             p={4}
@@ -138,7 +137,7 @@ export default function PricingPage({ plusPrice, proPrice }: PricingProps) {
             <Typography variant="h3">{plusPrice}</Typography>
             <form action="/api/stripe/create-checkout-session" method="POST">
               {/* Add a hidden field with the lookup_key of your Price */}
-              <input
+          {/* <input
                 type="hidden"
                 name="lookup_key"
                 value={process.env.NEXT_PUBLIC_STRIPE_PLUS_PRICE_ID}
@@ -166,7 +165,7 @@ export default function PricingPage({ plusPrice, proPrice }: PricingProps) {
                 <li>Write Prompt Parameters</li>
               </ul>
             </Stack>
-          </Stack>
+          </Stack> */}
           <Stack
             minWidth="300px"
             minHeight="470px"
@@ -211,7 +210,6 @@ export default function PricingPage({ plusPrice, proPrice }: PricingProps) {
               <ul>
                 <li>Publish Prompts</li>
                 <li>Write Comments</li>
-                <li>Favorite Prompts</li>
                 <li>Write Prompt Parameters</li>
                 <li>Write Prompt Details</li>
               </ul>
