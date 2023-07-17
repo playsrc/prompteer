@@ -20,6 +20,7 @@ import {
 import {
   IResourceComponentsProps,
   useCreate,
+  useGo,
   useNavigation,
   useOne,
   useTranslate,
@@ -44,12 +45,7 @@ export default function PromptCreate() {
   const { data: session } = useSession();
   const { mutate } = useCreate();
   const { goBack } = useNavigation();
-
-  const { data: userData } = useOne({
-    resource: "users",
-    id: session?.user?.id,
-  });
-  const user = userData?.data;
+  const go = useGo();
 
   const translate = useTranslate();
   const {
@@ -123,6 +119,7 @@ export default function PromptCreate() {
                 outline: "2px solid",
               }}
               variant="outlined"
+              onClick={() => goBack()}
             >
               Cancel
             </Button>
@@ -205,44 +202,44 @@ export default function PromptCreate() {
                 />
               </Stack>
 
-              {user?.subscription !== "free" && (
-                <Stack spacing={1}>
-                  <Typography>Parameters</Typography>
-                  <TextField
-                    {...register("parameter", {
-                      required: "This field is required",
-                    })}
-                    error={!!(errors as any)?.parameter}
-                    helperText={(errors as any)?.parameter?.message}
-                    margin="normal"
-                    fullWidth
-                    InputLabelProps={{ shrink: true }}
-                    type="text"
-                    name="parameter"
-                    multiline
-                    rows={3}
-                  />
-                </Stack>
-              )}
+              {session?.user?.stripeActive && (
+                <>
+                  <Stack spacing={1}>
+                    <Typography>Parameters</Typography>
+                    <TextField
+                      {...register("parameter", {
+                        required: "This field is required",
+                      })}
+                      error={!!(errors as any)?.parameter}
+                      helperText={(errors as any)?.parameter?.message}
+                      margin="normal"
+                      fullWidth
+                      InputLabelProps={{ shrink: true }}
+                      type="text"
+                      name="parameter"
+                      multiline
+                      rows={3}
+                    />
+                  </Stack>
 
-              {user?.subscription === "pro" && (
-                <Stack spacing={1}>
-                  <Typography>Details</Typography>
-                  <TextField
-                    {...register("detail", {
-                      required: "This field is required",
-                    })}
-                    error={!!(errors as any)?.detail}
-                    helperText={(errors as any)?.detail?.message}
-                    margin="normal"
-                    fullWidth
-                    InputLabelProps={{ shrink: true }}
-                    type="text"
-                    name="detail"
-                    multiline
-                    rows={3}
-                  />
-                </Stack>
+                  <Stack spacing={1}>
+                    <Typography>Details</Typography>
+                    <TextField
+                      {...register("detail", {
+                        required: "This field is required",
+                      })}
+                      error={!!(errors as any)?.detail}
+                      helperText={(errors as any)?.detail?.message}
+                      margin="normal"
+                      fullWidth
+                      InputLabelProps={{ shrink: true }}
+                      type="text"
+                      name="detail"
+                      multiline
+                      rows={3}
+                    />
+                  </Stack>
+                </>
               )}
               <Stack direction="row" spacing={2} width="100%">
                 <Controller
@@ -332,6 +329,45 @@ export default function PromptCreate() {
                   )}
                 />
               </Stack>
+              {!session?.user?.stripeActive && (
+                <Stack
+                  marginX="auto"
+                  maxWidth="900px"
+                  borderRadius="8px"
+                  direction="row"
+                  justifyContent="space-between"
+                  alignItems="center"
+                  px={8}
+                  py={4}
+                  spacing={2}
+                >
+                  <Stack
+                    spacing={4}
+                    alignItems="center"
+                    width="100%"
+                    textAlign="center"
+                  >
+                    <Typography fontWeight="500" fontSize="24px">
+                      Are you ready to unleash the full potential of Prompteer?
+                      <br />
+                      Check out our PRO subscription.
+                    </Typography>
+                    <Button
+                      size="large"
+                      variant="contained"
+                      sx={{ marginX: "auto", width: "max-content" }}
+                      onClick={() => {
+                        go({
+                          to: "/pricing",
+                          type: "replace",
+                        });
+                      }}
+                    >
+                      Start now
+                    </Button>
+                  </Stack>
+                </Stack>
+              )}
             </Box>
           </Stack>
         )}
