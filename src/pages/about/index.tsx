@@ -56,21 +56,20 @@ export default function AboutPage() {
       <Stack direction="row" spacing={4} my={8} alignItems="center">
         <Stack spacing={4} maxWidth="900px" mx="auto">
           <Typography variant="h3" fontWeight="600" textAlign="center">
-            Empowering Creativity through AI-Powered Inspiration
+            Empowering Creativity through AI Prompts
           </Typography>
           <Typography>
-            Prompteer is the innovative platform that connects you with a world
-            of captivating AI prompts, designed to fuel your creativity and take
-            your ideas to extraordinary heights.
-          </Typography>
-          <Typography>
-            At Prompteer, we believe that every great creation begins with a
-            spark of inspiration. That's why we've harnessed the power of
-            cutting-edge artificial intelligence to provide you with a
-            never-ending supply of thought-provoking prompts. Whether you're an
-            aspiring writer, an artist, a filmmaker, or simply someone with a
-            passion for creativity, our platform is here to ignite that creative
-            fire within you.
+            Welcome to Prompteer, a dynamic app where writers of all backgrounds
+            can share and explore a world of original writing prompts. Our
+            platform is dedicated to empowering individuals like you to spark
+            creativity, inspire others, and embark on exciting writing journeys.
+            <br />
+            Join our diverse and supportive community today, and together, let's
+            cultivate a space where every prompt has the potential to ignite
+            captivating stories. Prompteer is your platform to express, connect,
+            and collaborate, creating a tapestry of endless possibilities.
+            Unleash your writing prompts and let the magic of storytelling
+            unfold!
           </Typography>
         </Stack>
       </Stack>
