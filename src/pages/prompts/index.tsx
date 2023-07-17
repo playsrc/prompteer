@@ -56,14 +56,13 @@ import { formatDistanceToNow } from "date-fns";
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
 dayjs.extend(tz);
-dayjs.tz.setDefault("America/Sao_Paulo");
 
 export default function PromptsList() {
   const go = useGo();
-  const timeZone = dayjs.tz.guess();
 
   const { data, isLoading, isError, refetch, isRefetching } = useList<Prompt>({
     resource: "prompts",
+    sorters: [{ field: "created_at", order: "desc" }],
   });
   const { data: languageData, isLoading: languageIsLoading } =
     useList<Language>({
