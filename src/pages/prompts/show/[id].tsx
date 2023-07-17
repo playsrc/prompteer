@@ -101,6 +101,7 @@ export default function PromptShow() {
 
   const { data: commentData, isLoading: commentIsLoading } = useList<Comment>({
     resource: "comments",
+    sorters: [{ field: "created_at", order: "desc" }],
   });
 
   const { goBack } = useNavigation();
@@ -169,10 +170,10 @@ export default function PromptShow() {
             <Typography
               fontSize="24px"
               fontWeight="600"
-              textOverflow="ellipsis"
-              whiteSpace="nowrap"
-              maxWidth="500px"
-              overflow="hidden"
+              // textOverflow="ellipsis"
+              // whiteSpace="nowrap"
+              // maxWidth="500px"
+              // overflow="hidden"
             >
               {prompt?.title}
             </Typography>
