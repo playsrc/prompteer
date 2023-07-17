@@ -6,14 +6,17 @@ import {
   Divider,
   Stack,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
 import { useGo } from "@refinedev/core";
 import { GetServerSideProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import Image from "next/image";
 import Link from "next/link";
 
 export default function HomePage() {
   const go = useGo();
+  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
   return (
     <Container>
       <Stack my={3} direction="row" justifyContent="space-between">
@@ -56,12 +59,12 @@ export default function HomePage() {
       <Stack direction="row" spacing={4} my={8}>
         <Stack spacing={4}>
           <Typography variant="h3" fontWeight="600">
-            Vivamus sit amet elit quis lectus convallis aliquet.
+            AI Prompts & Engaging Comments
           </Typography>
           <Typography sx={{ opacity: "0.8" }}>
-            Nulla pellentesque lorem quis orci feugiat scelerisque. Phasellus
-            elementum velit et odio blandit, ac euismod diam bibendum. Praesent
-            pulvinar tortor vitae pharetra laoreet.
+            Welcome to Prompteer, a thriving community where you share AI
+            prompts, get feedback, and embrace collective inspiration. Connect
+            with writers, watch your creativity flourish!
           </Typography>
           <Stack direction="row" spacing={2}>
             <Button
@@ -97,34 +100,82 @@ export default function HomePage() {
               width: "340px",
               height: "200px",
               bgcolor: "#363636",
-              borderRadius: "8px",
               top: 0,
+              border: "2px solid",
+              borderRadius: "8px",
+              borderColor: (theme) => {
+                return prefersDarkMode
+                  ? theme.palette.grey[800]
+                  : theme.palette.grey[300];
+              },
+              overflow: "hidden",
             }}
-          ></Box>
+          >
+            <Image
+              src={
+                prefersDarkMode
+                  ? "/images/screenshots/list-grid-dark.png"
+                  : "/images/screenshots/list-grid-light.png"
+              }
+              alt=""
+              width={340}
+              height={200}
+            />
+          </Box>
           <Box
             sx={{
               position: "absolute",
               width: "340px",
               height: "200px",
               bgcolor: "#262626",
-              borderRadius: "8px",
               top: 50,
               right: 90,
+              border: "2px solid",
+              borderRadius: "8px",
+              borderColor: (theme) => {
+                return prefersDarkMode
+                  ? theme.palette.grey[800]
+                  : theme.palette.grey[300];
+              },
+              overflow: "hidden",
             }}
-          ></Box>
+          >
+            <Image
+              src={
+                prefersDarkMode
+                  ? "/images/screenshots/view-dark.png"
+                  : "/images/screenshots/view-light.png"
+              }
+              alt=""
+              width={340}
+              height={200}
+            />
+          </Box>
           <Box
             sx={{
               position: "absolute",
               width: "340px",
               height: "200px",
               bgcolor: "#161616",
-              borderRadius: "8px",
               top: 100,
               right: 0,
               border: "2px solid",
+              borderRadius: "8px",
               borderColor: (theme) => theme.palette.primary.main,
+              overflow: "hidden",
             }}
-          ></Box>
+          >
+            <Image
+              src={
+                prefersDarkMode
+                  ? "/images/screenshots/list-dark.png"
+                  : "/images/screenshots/list-light.png"
+              }
+              alt=""
+              width={340}
+              height={200}
+            />
+          </Box>
         </Stack>
       </Stack>
 
@@ -148,7 +199,7 @@ export default function HomePage() {
           <Typography variant="overline">Prompts Created</Typography>
         </Stack>
         <Stack textAlign="center">
-          <Typography variant="h5">2+</Typography>
+          <Typography variant="h5">5+</Typography>
           <Typography variant="overline">Users Registered</Typography>
         </Stack>
         <Stack textAlign="center">
@@ -162,12 +213,13 @@ export default function HomePage() {
       </Stack>
       <Stack spacing={2} maxWidth="800px" mx="auto" textAlign="center">
         <Typography fontWeight="500" fontSize="24px">
-          Sed dui ligula, interdum in fermentum fringilla, scelerisque in nisi.
+          Sneak Peek: Experience the Prompteer Journey
         </Typography>
         <Typography sx={{ opacity: "0.8" }}>
-          Nulla pellentesque lorem quis orci feugiat scelerisque. Phasellus
-          elementum velit et odio blandit, ac euismod diam bibendum. Praesent
-          pulvinar tortor vitae pharetra laoreet.
+          Step into the world of Prompteer through captivating screenshots.
+          Witness the seamless interface, vibrant community, and innovative AI
+          prompts that await you. Get a glimpse of the immersive experience that
+          awaits within Prompteer!
         </Typography>
       </Stack>
 
@@ -175,27 +227,81 @@ export default function HomePage() {
         <Box
           sx={{
             width: "380px",
-            height: "240px",
+            height: "220px",
             bgcolor: "#363636",
+            border: "2px solid",
             borderRadius: "8px",
+            borderColor: (theme) => {
+              return prefersDarkMode
+                ? theme.palette.grey[800]
+                : theme.palette.grey[300];
+            },
+            overflow: "hidden",
           }}
-        ></Box>
+        >
+          <Image
+            src={
+              prefersDarkMode
+                ? "/images/screenshots/view-dark.png"
+                : "/images/screenshots/view-light.png"
+            }
+            alt=""
+            width={370}
+            height={220}
+          />
+        </Box>
         <Box
           sx={{
             width: "380px",
-            height: "240px",
+            height: "220px",
             bgcolor: "#363636",
+            border: "2px solid",
             borderRadius: "8px",
+            borderColor: (theme) => {
+              return prefersDarkMode
+                ? theme.palette.grey[800]
+                : theme.palette.grey[300];
+            },
+            overflow: "hidden",
           }}
-        ></Box>
+        >
+          <Image
+            src={
+              prefersDarkMode
+                ? "/images/screenshots/create-dark.png"
+                : "/images/screenshots/create-light.png"
+            }
+            alt=""
+            width={370}
+            height={220}
+          />
+        </Box>
         <Box
           sx={{
             width: "380px",
-            height: "240px",
+            height: "220px",
             bgcolor: "#363636",
+            border: "2px solid",
             borderRadius: "8px",
+            borderColor: (theme) => {
+              return prefersDarkMode
+                ? theme.palette.grey[800]
+                : theme.palette.grey[300];
+            },
+            overflow: "hidden",
           }}
-        ></Box>
+        >
+          <Image
+            src={
+              prefersDarkMode
+                ? "/images/screenshots/list-dark.png"
+                : "/images/screenshots/list-light.png"
+            }
+            alt=""
+            width={370}
+            height={220}
+          />
+        </Box>
       </Stack>
 
       <Stack

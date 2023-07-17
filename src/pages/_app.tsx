@@ -27,6 +27,12 @@ import { appWithTranslation, useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
 import { supabaseClient } from "src/utility";
 import { ThemedTitleV2 } from "@components/themedLayout/title";
+import {
+  CircularProgress,
+  LinearProgress,
+  Stack,
+  useMediaQuery,
+} from "@mui/material";
 
 export type ExtendedNextPage = NextPage & {
   noLayout?: boolean;
@@ -49,8 +55,21 @@ const App = (props: React.PropsWithChildren) => {
   const router = useRouter();
   const { to } = router.query;
 
+  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
   if (status === "loading") {
-    return <span>loading...</span>;
+    return (
+      <Stack
+        position="absolute"
+        sx={{ inset: "0" }}
+        bgcolor={prefersDarkMode ? "black" : "white"}
+        height="100%"
+        width="100%"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <CircularProgress size="128px" />
+      </Stack>
+    );
   }
 
   const authProvider: AuthBindings = {
@@ -143,25 +162,25 @@ const App = (props: React.PropsWithChildren) => {
                   meta: { icon: <WysiwygOutlined /> },
                 },
                 {
-                  name: "Created prompts",
-                  list: "/",
+                  name: "My prompts",
+                  list: "/my-prompts",
                   meta: { icon: <Inventory2Outlined /> },
                 },
                 {
-                  name: "Created comments",
-                  list: "/",
+                  name: "My comments",
+                  list: "/my-comments",
                   meta: { icon: <ForumOutlined /> },
                 },
-                {
-                  name: "My profile",
-                  list: "/",
-                  meta: { label: "My profile", icon: <PersonOutline /> },
-                },
-                {
-                  name: "Settings",
-                  list: "/",
-                  meta: { icon: <SettingsOutlined /> },
-                },
+                // {
+                //   name: "My profile",
+                //   list: "/",
+                //   meta: { label: "My profile", icon: <PersonOutline /> },
+                // },
+                // {
+                //   name: "Settings",
+                //   list: "/",
+                //   meta: { icon: <SettingsOutlined /> },
+                // },
                 { name: "languages" },
                 { name: "ai_models" },
                 { name: "comments" },
