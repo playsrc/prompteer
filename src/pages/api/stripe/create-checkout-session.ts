@@ -15,6 +15,11 @@ export default async (
   // const session = await getSession({ req });
   const session = await getServerSession(req, res, authOptions);
 
+  if (session?.user?.stripeActive === true) {
+    res.status(307).redirect("/prompts");
+    return;
+  }
+
   // Error handling
   if (!session?.user) {
     res.status(307).redirect("/login");
