@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth";
-import { getSession } from "next-auth/react";
 import { stripe } from "src/utility";
 import { authOptions } from "../auth/[...nextauth]";
 
@@ -24,12 +23,6 @@ export default async (
   if (!session?.user) {
     res.status(307).redirect("/login");
     return;
-    // return res.status(401).json({
-    //   error: {
-    //     code: "no-access",
-    //     message: "You are not signed in.",
-    //   },
-    // });
   }
 
   const checkoutSession = await stripe.checkout.sessions.create({

@@ -1,55 +1,40 @@
-import { useGo, useList, useOne } from "@refinedev/core";
-import { GetServerSideProps } from "next";
-import { getServerSession } from "next-auth";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { authOptions } from "../api/auth/[...nextauth]";
-import { AiModel, Language, Prompt, User } from "@prisma/client";
 import {
   Add,
-  ChatBubbleOutlineOutlined,
-  ChatOutlined,
-  Code,
-  ContentCopyOutlined,
-  FavoriteBorderOutlined,
-  FavoriteOutlined,
-  ForumOutlined,
-  LockOutlined,
-  ModeCommentOutlined,
   Refresh,
   SettingsOutlined,
-  SplitscreenOutlined,
   TableRows,
   TableRowsOutlined,
   TranslateOutlined,
-  ViewStream,
   Window,
-  Window as WindowIcon,
   WindowOutlined,
 } from "@mui/icons-material";
 import {
-  Box,
-  Stack,
-  Typography,
-  IconButton,
-  Button,
-  Tooltip,
-  Divider,
-  Chip,
-  FormControl,
-  Select,
-  MenuItem,
   Avatar,
+  Box,
+  Button,
+  FormControl,
   Grid,
-  Link,
-  CircularProgress,
+  IconButton,
   LinearProgress,
+  Link,
+  MenuItem,
+  Select,
+  Stack,
+  Tooltip,
+  Typography,
 } from "@mui/material";
+import { Language } from "@prisma/client";
+import { useGo, useList } from "@refinedev/core";
+import { GetServerSideProps } from "next";
+import { getServerSession } from "next-auth";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useState } from "react";
+import { authOptions } from "../api/auth/[...nextauth]";
 
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import utc from "dayjs/plugin/utc";
 import tz from "dayjs/plugin/timezone";
+import utc from "dayjs/plugin/utc";
 
 import { formatDistanceToNow } from "date-fns";
 
@@ -60,7 +45,7 @@ dayjs.extend(tz);
 export default function PromptsList() {
   const go = useGo();
 
-  const { data, isLoading, isError, refetch, isRefetching } = useList<Prompt>({
+  const { data, isLoading, isError, refetch, isRefetching } = useList({
     resource: "prompts",
     sorters: [{ field: "created_at", order: "desc" }],
   });
@@ -68,10 +53,10 @@ export default function PromptsList() {
     useList<Language>({
       resource: "languages",
     });
-  const { data: aiModelData, isLoading: aiModelIsLoading } = useList<AiModel>({
+  const { data: aiModelData, isLoading: aiModelIsLoading } = useList({
     resource: "ai_models",
   });
-  const { data: userData, isLoading: userIsLoading } = useList<User>({
+  const { data: userData, isLoading: userIsLoading } = useList({
     resource: "users",
   });
 
@@ -82,10 +67,6 @@ export default function PromptsList() {
   const aiModels = aiModelData?.data ?? [];
   const users = userData?.data ?? [];
 
-  // if (isLoading || isRefetching) {
-  //   return <div>Loading...</div>;
-  // }
-
   if (isError) {
     return <div>Something went wrong!</div>;
   }
@@ -95,8 +76,6 @@ export default function PromptsList() {
       <Box
         sx={{
           p: { xs: 1, md: 2, lg: 3 },
-          // bgcolor: (theme) => theme.palette.background.paper,
-          // minHeight: "150px",
         }}
       >
         <Stack
@@ -143,19 +122,6 @@ export default function PromptsList() {
             </FormControl>
           </Stack>
           <Stack direction="row" spacing={2} alignItems="center">
-            {/* <Button
-              startIcon={<LockOutlined />}
-              size="large"
-              style={{
-                minWidth: "128px",
-                textTransform: "capitalize",
-                border: "none",
-                outline: "2px solid",
-              }}
-              variant="outlined"
-            >
-              Prompt
-            </Button> */}
             <Button
               startIcon={<Add />}
               size="large"
@@ -237,7 +203,6 @@ export default function PromptsList() {
                       borderRadius: "8px",
                       backgroundColor: (theme) =>
                         theme.palette.background.paper,
-                      // boxShadow: "0px 0px 16px 0px rgba(0,0,0,0.1)",
                       minHeight: "180px",
                       transition: "border-color 0.15s ease",
                       outline: "none",
@@ -282,26 +247,6 @@ export default function PromptsList() {
                           alignItems="center"
                           sx={{ opacity: "0.8" }}
                         >
-                          {/* <Stack
-                            direction="row"
-                            spacing={1}
-                            alignItems="center"
-                          >
-                            <FavoriteBorderOutlined fontSize="small" />
-                            <Typography fontSize="small">
-                              {prompt?.like_count ?? 0}
-                            </Typography>
-                          </Stack>
-                          <Stack
-                            direction="row"
-                            spacing={1}
-                            alignItems="center"
-                          >
-                            <ModeCommentOutlined fontSize="small" />
-                            <Typography fontSize="small">
-                              {prompt?.like_count ?? 0}
-                            </Typography>
-                          </Stack> */}
                           <Stack
                             direction="row"
                             spacing={1}

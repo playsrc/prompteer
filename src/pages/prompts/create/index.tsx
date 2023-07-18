@@ -1,15 +1,13 @@
 import { GetServerSideProps } from "next";
-import { User, getServerSession } from "next-auth";
+import { getServerSession } from "next-auth";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { authOptions } from "src/pages/api/auth/[...nextauth]";
 
+import { DeleteOutline, Refresh, SaveOutlined } from "@mui/icons-material";
 import {
   Autocomplete,
   Box,
   Button,
-  Checkbox,
-  Chip,
-  FormControlLabel,
   IconButton,
   LinearProgress,
   Stack,
@@ -17,29 +15,11 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import {
-  IResourceComponentsProps,
-  useCreate,
-  useGo,
-  useNavigation,
-  useOne,
-  useTranslate,
-} from "@refinedev/core";
-import { Create, useAutocomplete } from "@refinedev/mui";
+import { useCreate, useGo, useNavigation, useTranslate } from "@refinedev/core";
+import { useAutocomplete } from "@refinedev/mui";
 import { useForm } from "@refinedev/react-hook-form";
-import { Controller } from "react-hook-form";
-import {
-  FavoriteBorderOutlined,
-  CopyAllOutlined,
-  CancelOutlined,
-  CreateOutlined,
-  SaveOutlined,
-  Refresh,
-  DeleteOutline,
-  Build,
-  LibraryBooks,
-} from "@mui/icons-material";
 import { useSession } from "next-auth/react";
+import { Controller } from "react-hook-form";
 
 export default function PromptCreate() {
   const { data: session } = useSession();
@@ -82,8 +62,6 @@ export default function PromptCreate() {
       <Box
         sx={{
           p: { xs: 1, md: 2, lg: 3 },
-          // bgcolor: (theme) => theme.palette.background.paper,
-          // minHeight: "150px",
         }}
       >
         <Stack
@@ -158,7 +136,6 @@ export default function PromptCreate() {
               borderColor: (theme) => theme.palette.action.selected,
               borderRadius: "8px",
               backgroundColor: (theme) => theme.palette.background.paper,
-              // boxShadow: "0px 0px 16px 0px rgba(0,0,0,0.1)",
             }}
           >
             <Box

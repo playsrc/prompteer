@@ -14,28 +14,6 @@ export async function getServerSideProps(context: any) {
   const translateProps = await serverSideTranslations(context.locale ?? "en", [
     "common",
   ]);
-  // const session = await getServerSession(
-  //     context.req,
-  //     context.res,
-  //     authOptions,
-  // );
-
-  // if (!session) {
-  //     return {
-  //         redirect: {
-  //             destination: `/login?to=${encodeURIComponent(
-  //                 context.req.url || "/",
-  //             )}`,
-  //             permanent: false,
-  //         },
-  //     };
-  // }
-
-  // return {
-  //     props: {
-  //         session,
-  //     },
-  // };
 
   return {
     props: {

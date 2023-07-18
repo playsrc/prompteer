@@ -10,29 +10,21 @@ import { SessionProvider, signIn, signOut, useSession } from "next-auth/react";
 import { AppProps } from "next/app";
 
 import { ThemedLayoutV2 } from "@components/themedLayout";
+import { ThemedTitleV2 } from "@components/themedLayout/title";
 import { ColorModeContextProvider } from "@contexts";
 import {
   Article,
   ForumOutlined,
   Inventory2Outlined,
-  PersonOutline,
-  SettingsOutlined,
-  SpaceDashboardOutlined,
   WysiwygOutlined,
 } from "@mui/icons-material";
+import { CircularProgress, Stack, useMediaQuery } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import GlobalStyles from "@mui/material/GlobalStyles";
 import { dataProvider } from "@refinedev/supabase";
 import { appWithTranslation, useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
 import { supabaseClient } from "src/utility";
-import { ThemedTitleV2 } from "@components/themedLayout/title";
-import {
-  CircularProgress,
-  LinearProgress,
-  Stack,
-  useMediaQuery,
-} from "@mui/material";
 
 export type ExtendedNextPage = NextPage & {
   noLayout?: boolean;
@@ -171,16 +163,6 @@ const App = (props: React.PropsWithChildren) => {
                   list: "/my-comments",
                   meta: { icon: <ForumOutlined /> },
                 },
-                // {
-                //   name: "My profile",
-                //   list: "/",
-                //   meta: { label: "My profile", icon: <PersonOutline /> },
-                // },
-                // {
-                //   name: "Settings",
-                //   list: "/",
-                //   meta: { icon: <SettingsOutlined /> },
-                // },
                 { name: "languages" },
                 { name: "ai_models" },
                 { name: "comments" },

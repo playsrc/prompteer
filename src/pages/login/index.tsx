@@ -1,4 +1,4 @@
-import { Article, GitHub } from "@mui/icons-material";
+import { Article } from "@mui/icons-material";
 import { Stack, Typography } from "@mui/material";
 import { AuthPage } from "@refinedev/mui";
 

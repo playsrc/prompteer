@@ -1,21 +1,10 @@
 import { Article } from "@mui/icons-material";
-import {
-  Box,
-  Button,
-  Container,
-  Divider,
-  List,
-  ListItem,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Button, Container, Divider, Stack, Typography } from "@mui/material";
 import { useGo } from "@refinedev/core";
 import { GetServerSideProps } from "next";
-import { getServerSession } from "next-auth";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Link from "next/link";
 import { stripe } from "src/utility";
-import { authOptions } from "../api/auth/[...nextauth]";
 
 interface PricingProps {
   plusPrice: string;
@@ -119,53 +108,6 @@ export default function PricingPage({ plusPrice, proPrice }: PricingProps) {
               </ul>
             </Stack>
           </Stack>
-          {/* <Stack
-            minWidth="300px"
-            minHeight="470px"
-            p={4}
-            spacing={4}
-            sx={{
-              border: "1px solid",
-              borderColor: (theme) => theme.palette.action.selected,
-              bgcolor: (theme) => theme.palette.background.paper,
-              borderRadius: "8px",
-              width: "max-content",
-              textAlign: "center",
-            }}
-          >
-            <Typography variant="h5">Plus</Typography>
-            <Typography variant="h3">{plusPrice}</Typography>
-            <form action="/api/stripe/create-checkout-session" method="POST">
-              {/* Add a hidden field with the lookup_key of your Price */}
-          {/* <input
-                type="hidden"
-                name="lookup_key"
-                value={process.env.NEXT_PUBLIC_STRIPE_PLUS_PRICE_ID}
-              />
-              <Button
-                size="large"
-                sx={{
-                  alignSelf: "center",
-                  borderRadius: "100px",
-                  maxWidth: "max-content",
-                }}
-                variant="contained"
-                id="checkout-and-portal-button"
-                type="submit"
-              >
-                Checkout
-              </Button>
-            </form>
-            <Stack textAlign="start">
-              <Typography>Features included</Typography>
-              <ul>
-                <li>Publish Prompts</li>
-                <li>Write Comments</li>
-                <li>Favorite Prompts</li>
-                <li>Write Prompt Parameters</li>
-              </ul>
-            </Stack>
-          </Stack> */}
           <Stack
             minWidth="300px"
             minHeight="470px"
