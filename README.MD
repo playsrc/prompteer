@@ -20,9 +20,7 @@ In this section, add the GitHub and Twitter profiles of everyone in your team.
 
 ### 🖼 Demonstration
 
-<video src="https://drive.google.com/file/d/1kDMl_BBfjXtUEfMrl51pdZE1r6nOyuKv/preview" width="640" height="480"></video>
-
-![](https://drive.google.com/file/d/1kDMl_BBfjXtUEfMrl51pdZE1r6nOyuKv/preview)
+[](.github/demo.mp4)
 
 ### 🧪 Set up Project
 
