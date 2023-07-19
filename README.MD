@@ -20,7 +20,7 @@ The app uses OAuth (GitHub or Discord) to sign in new users, and when it's their
 
 ### 🖼 Demonstration
 
-<video src="https://github.com/mateusabelli/prompteer/assets/43862225/db54682b-73bc-4f21-9065-d301ba566a74"></video>
+<video src=".github/demo.mp4"></video>
 
 ### 🧪 Set up Project
 
